@@ -38,9 +38,9 @@ const INITIAL_DATA = {
 const TOTAL_VISIBLE_STEPS = 7;
 
 const slideVariants = {
-  enter: (dir) => ({ x: dir > 0 ? 60 : -60, opacity: 0 }),
-  center: { x: 0, opacity: 1 },
-  exit: (dir) => ({ x: dir > 0 ? -60 : 60, opacity: 0 }),
+  enter: (dir) => ({ opacity: 0, y: dir > 0 ? 14 : -14 }),
+  center: { opacity: 1, y: 0 },
+  exit: (dir) => ({ opacity: 0, y: dir > 0 ? -14 : 14 }),
 };
 
 export default function WizardContainer() {
@@ -177,8 +177,8 @@ export default function WizardContainer() {
           <div
             className={
               showPreview
-                ? "flex-1 min-w-0 py-4 sm:py-8 overflow-x-hidden"
-                : "w-full max-w-md py-6 sm:py-12 overflow-x-hidden"
+                ? "flex-1 min-w-0 py-4 sm:py-8"
+                : "w-full max-w-md py-6 sm:py-12"
             }
           >
             {/* Mobile preview toggle */}
