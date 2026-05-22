@@ -192,11 +192,24 @@ export default function WizardContainer() {
               <div className="lg:hidden mb-5">
                 <button
                   onClick={() => setMobileRefOpen((p) => !p)}
-                  className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-card border border-border/60 text-sm text-muted-foreground transition-colors active:opacity-70"
+                  className={`w-full flex items-center justify-between px-4 py-3 rounded-xl border text-sm transition-colors active:opacity-70 ${
+                    mobileRefOpen
+                      ? "bg-card border-border/60 text-muted-foreground"
+                      : "bg-primary/10 border-primary/50 text-foreground"
+                  }`}
                 >
                   <span className="flex items-center gap-2">
-                    <BookOpen size={14} />
+                    <BookOpen
+                      size={14}
+                      className={mobileRefOpen ? "" : "text-primary"}
+                    />
                     Guia visual — partes do logo
+                    {!mobileRefOpen && (
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-60" />
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
+                      </span>
+                    )}
                   </span>
                   <ChevronDown
                     size={14}
@@ -278,6 +291,7 @@ export default function WizardContainer() {
                     title="Cor do Logo escolhido"
                     field="cor_objeto"
                     stepLabel={`${wizardStep}/${TOTAL_VISIBLE_STEPS}`}
+                    previewImage={data.modelo_escolhido ? `/models/${data.modelo_escolhido}` : undefined}
                   />
                 )}
 

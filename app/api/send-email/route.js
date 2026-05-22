@@ -6,9 +6,9 @@ export async function POST(request) {
 
     const fields = [
       "nome", "email", "whatsapp", "tipo_logo",
-      "modelo_escolhido", "imagem_logo", "imagem_referencia",
-      "cor_principal", "texto_base", "cor_texto_base",
-      "texto_interno", "cor_texto_interno",
+      "modelo_escolhido", "imagem_referencia",
+      "cor_objeto", "cor_principal", "texto_base", "cor_texto_base",
+      "texto_interno", "tipo_texto_interno", "cor_texto_interno",
     ];
 
     const data = Object.fromEntries(
@@ -18,7 +18,9 @@ export async function POST(request) {
     const uploadFile = formData.get("upload");
 
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp-mail.outlook.com",
+      port: 587,
+      secure: false,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
@@ -49,53 +51,105 @@ export async function POST(request) {
   }
 }
 
+const COLOR_NAMES = {
+  "#FFFFFF": "Branco",
+  "#F8F8F8": "Branco suave",
+  "#1A1A1A": "Preto",
+  "#000000": "Preto",
+  "#6DC9A4": "Verde menta",
+  "#D4AF37": "Dourado",
+  "#F5F0E0": "Creme",
+  "#1E3A5F": "Azul marinho",
+  "#8B4513": "Marrom",
+  "#C0392B": "Vermelho",
+};
+
+function colorLabel(hex) {
+  if (!hex) return "—";
+  const upper = hex.toUpperCase();
+  const name = COLOR_NAMES[upper] ?? COLOR_NAMES[hex];
+  return name ? `${name} <span style="color:#888">(${hex})</span>` : hex;
+}
+
 function colorSwatch(hex) {
-  return `<span style="display:inline-block;width:14px;height:14px;background:${hex};border-radius:3px;border:1px solid #444;vertical-align:middle;margin-right:6px"></span>${hex}`;
+  if (!hex) return "—";
+  return `<span style="display:inline-flex;align-items:center;gap:6px">
+    <span style="display:inline-block;width:16px;height:16px;background:${hex};border-radius:4px;border:1px solid #444;flex-shrink:0"></span>
+    ${colorLabel(hex)}
+  </span>`;
+}
+
+function row(label, value) {
+  return `<tr>
+    <td style="padding:10px 16px;color:#888;white-space:nowrap;border-bottom:1px solid #1e1e1e;font-size:13px;vertical-align:middle">${label}</td>
+    <td style="padding:10px 16px;font-weight:500;border-bottom:1px solid #1e1e1e;font-size:13px;vertical-align:middle">${value}</td>
+  </tr>`;
+}
+
+function sectionHeader(title) {
+  return `<tr>
+    <td colspan="2" style="padding:12px 16px 6px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#6DC9A4;background:#111;border-bottom:1px solid #1e1e1e">${title}</td>
+  </tr>`;
 }
 
 function buildEmailHtml(data) {
-  const rows = [
-    ["Cliente", data.nome],
-    ["Email", data.email],
-    ["WhatsApp", data.whatsapp],
-    ["Tipo de logo", data.tipo_logo === "economica" ? "Econômica" : "Customizada"],
-    ...(data.tipo_logo === "economica"
-      ? [["Modelo escolhido", `Modelo ${data.modelo_escolhido}`]]
-      : [["Referência enviada", data.imagem_referencia || "(ver anexo)"]]),
-    ["Imagem principal", `Imagem ${data.imagem_logo}`],
-    ["Cor principal", colorSwatch(data.cor_principal)],
-    ["Texto base", data.texto_base],
-    ["Cor texto base", colorSwatch(data.cor_texto_base)],
-    ["Texto interno", data.texto_interno],
-    ["Cor texto interno", colorSwatch(data.cor_texto_interno)],
-  ];
+  const cleanModelo = data.modelo_escolhido
+    ? data.modelo_escolhido.replace(/\.[^.]+$/, "").replace(/^\d+-/, "")
+    : "";
 
-  const tableRows = rows
-    .map(
-      ([label, value]) =>
-        `<tr>
-          <td style="padding:8px 12px;color:#888;white-space:nowrap;border-bottom:1px solid #222">${label}</td>
-          <td style="padding:8px 12px;font-weight:500;border-bottom:1px solid #222">${value}</td>
-        </tr>`
-    )
-    .join("");
+  const tipoTextoLabel =
+    data.tipo_texto_interno === "negativo"
+      ? "Negativo — recortado na base, sem cor própria"
+      : data.tipo_texto_interno === "positivo"
+      ? "Positivo — texto com cor própria"
+      : "—";
 
-  return `
-    <!DOCTYPE html>
-    <html>
-    <head><meta charset="UTF-8"></head>
-    <body style="background:#0a0a0a;color:#f0f0f0;font-family:sans-serif;padding:32px">
-      <div style="max-width:560px;margin:0 auto">
-        <div style="border-bottom:2px solid #6DC9A4;padding-bottom:12px;margin-bottom:24px">
-          <h2 style="margin:0;color:#6DC9A4;letter-spacing:2px">Levieira's</h2>
-          <p style="margin:4px 0 0;color:#888;font-size:14px">Nova solicitação de logo</p>
-        </div>
-        <table style="width:100%;border-collapse:collapse;background:#141414;border-radius:8px;overflow:hidden">
-          ${tableRows}
-        </table>
-        ${data.tipo_logo === "customizada" ? '<p style="margin-top:16px;color:#888;font-size:13px">* Arquivo de referência enviado em anexo.</p>' : ""}
-      </div>
-    </body>
-    </html>
-  `;
+  const showCorTextoInterno =
+    data.tipo_texto_interno !== "negativo" && data.cor_texto_interno;
+
+  return `<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="background:#0a0a0a;color:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;padding:32px 16px;margin:0">
+  <div style="max-width:580px;margin:0 auto">
+
+    <!-- Header -->
+    <div style="margin-bottom:28px;padding-bottom:16px;border-bottom:2px solid #6DC9A4">
+      <h1 style="margin:0;color:#6DC9A4;font-size:22px;letter-spacing:3px;font-weight:700">LEVIEIRA'S</h1>
+      <p style="margin:4px 0 0;color:#666;font-size:13px">Nova solicitação de logo recebida</p>
+    </div>
+
+    <!-- Tabela principal -->
+    <table style="width:100%;border-collapse:collapse;background:#141414;border-radius:10px;overflow:hidden;border:1px solid #1e1e1e">
+
+      ${sectionHeader("Dados do cliente")}
+      ${row("Nome", data.nome)}
+      ${row("E-mail", `<a href="mailto:${data.email}" style="color:#6DC9A4;text-decoration:none">${data.email}</a>`)}
+      ${row("WhatsApp", data.whatsapp)}
+
+      ${sectionHeader("Tipo de solicitação")}
+      ${row("Tipo de logo", data.tipo_logo === "economica" ? "Econômica (modelo do catálogo)" : "Customizada (referência própria)")}
+      ${data.tipo_logo === "economica" && cleanModelo ? row("Modelo escolhido", cleanModelo) : ""}
+      ${data.tipo_logo === "customizada" ? row("Referência", "(arquivo enviado em anexo)") : ""}
+
+      ${sectionHeader("Cores e textos")}
+      ${row("Cor do logo", colorSwatch(data.cor_objeto))}
+      ${row("Texto sobre a base", data.texto_base || "—")}
+      ${row("Cor do texto sobre a base", colorSwatch(data.cor_texto_base))}
+      ${row("Texto dentro da base", data.texto_interno || "—")}
+      ${row("Tipo do texto interno", tipoTextoLabel)}
+      ${showCorTextoInterno ? row("Cor do texto interno", colorSwatch(data.cor_texto_interno)) : ""}
+      ${row("Cor da base", colorSwatch(data.cor_principal))}
+
+    </table>
+
+    <!-- Footer -->
+    <p style="margin-top:20px;color:#444;font-size:12px;text-align:center">
+      Solicitação enviada via formulário Levieira's
+    </p>
+
+  </div>
+</body>
+</html>`;
 }
+

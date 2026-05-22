@@ -16,6 +16,7 @@ export default function StepColorPicker({
   title,
   field,
   stepLabel,
+  previewImage,
 }) {
   const value = data[field] || "#6DC9A4";
   const isValidHex = /^#[0-9A-Fa-f]{6}$/.test(value);
@@ -47,6 +48,20 @@ export default function StepColorPicker({
       <p className="text-muted-foreground text-sm mb-5 sm:mb-8">
         Escolha a cor desejada. Nós utilizaremos o tom mais próximo possível da cor escolhida.
       </p>
+
+      {previewImage && (
+        <div className="flex items-center gap-3 mb-5 sm:mb-8 -mt-2">
+          <img
+            src={previewImage}
+            alt="Modelo selecionado"
+            className="w-14 h-14 rounded-lg object-cover border border-border/60 shrink-0"
+          />
+          <p className="text-xs text-muted-foreground leading-snug">
+            Este é o modelo que você escolheu.
+            <br />Escolha a cor que ele terá.
+          </p>
+        </div>
+      )}
 
       <div className="flex flex-col items-center gap-4 sm:gap-6">
         <div className="w-full max-w-xs">

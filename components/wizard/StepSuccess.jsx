@@ -26,24 +26,46 @@ function colorLabel(hex) {
 }
 
 function buildSummaryMessage(data) {
-  const tipo = data.tipo_logo === "economica" ? "Economica" : "Customizada";
+  const tipo = data.tipo_logo === "economica" ? "Econômica" : "Customizada";
+
+  const cleanModelo = data.modelo_escolhido
+    ? data.modelo_escolhido.replace(/\.[^.]+$/, "").replace(/^\d+-/, "")
+    : null;
+
+  const tipoTextoLabel =
+    data.tipo_texto_interno === "negativo"
+      ? "Negativo (recortado na base)"
+      : data.tipo_texto_interno === "positivo"
+      ? "Positivo (com cor própria)"
+      : null;
+
+  const showCorTextoInterno =
+    data.tipo_texto_interno !== "negativo" && data.cor_texto_interno;
+
   const lines = [
-    `Resumo do pedido - Levieiras`,
+    `📋 *Solicitação de Logo — Levieira's*`,
     ``,
+    `👤 *Cliente*`,
     `Nome: ${data.nome}`,
     `Email: ${data.email}`,
     `WhatsApp: ${data.whatsapp}`,
     ``,
+    `🖼️ *Tipo de Logo*`,
     `Tipo: ${tipo}`,
-    data.tipo_logo === "economica" && data.modelo_escolhido
-      ? `Modelo: ${data.modelo_escolhido}`
+    data.tipo_logo === "economica" && cleanModelo
+      ? `Modelo: ${cleanModelo}`
+      : null,
+    data.tipo_logo === "customizada"
+      ? `Referência: (arquivo enviado por email)`
       : null,
     ``,
-    `Cor do objeto: ${colorLabel(data.cor_objeto)}`,
-    `Texto da base: ${data.texto_base || "-"}`,
-    `Cor do texto da base: ${colorLabel(data.cor_texto_base)}`,
-    `Texto dentro da base: ${data.texto_interno || "-"}`,
-    `Cor do texto dentro da base: ${colorLabel(data.cor_texto_interno)}`,
+    `🎨 *Cores e Textos*`,
+    `Cor do logo: ${colorLabel(data.cor_objeto)}`,
+    `Texto sobre a base: ${data.texto_base || "—"}`,
+    `Cor do texto sobre a base: ${colorLabel(data.cor_texto_base)}`,
+    `Texto dentro da base: ${data.texto_interno || "—"}`,
+    tipoTextoLabel ? `Tipo do texto interno: ${tipoTextoLabel}` : null,
+    showCorTextoInterno ? `Cor do texto interno: ${colorLabel(data.cor_texto_interno)}` : null,
     `Cor da base: ${colorLabel(data.cor_principal)}`,
   ]
     .filter((l) => l !== null)

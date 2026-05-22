@@ -41,7 +41,7 @@ export default function StepSummary({ data, uploadFile, onBack, onSuccess }) {
         "nome", "email", "whatsapp", "tipo_logo",
         "modelo_escolhido", "imagem_referencia",
         "cor_objeto", "cor_principal", "texto_base", "cor_texto_base",
-        "texto_interno", "cor_texto_interno",
+        "texto_interno", "tipo_texto_interno", "cor_texto_interno",
       ];
 
       fieldsToSend.forEach((key) => {
