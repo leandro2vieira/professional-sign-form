@@ -42,7 +42,7 @@ export default function StepIdentification({ data, onUpdate, onNext }) {
   };
 
   return (
-    <div>
+    <div className="pb-28 lg:pb-0">
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
@@ -116,7 +116,7 @@ export default function StepIdentification({ data, onUpdate, onNext }) {
             )}
           </div>
 
-          <div className="sticky bottom-0 -mx-4 px-4 pt-4 pb-safe sm:pb-4 bg-background/95 backdrop-blur-sm border-t border-border/50 mt-2">
+          <div className="fixed bottom-0 inset-x-0 z-50 px-4 pt-4 pb-safe sm:pb-4 bg-background/95 backdrop-blur-sm border-t border-border/50 lg:sticky lg:bottom-0 lg:-mx-4 lg:left-auto lg:right-auto lg:z-auto">
             <Button
               type="submit"
               className="w-full py-6 text-base font-semibold tracking-wide bg-primary text-primary-foreground hover:bg-primary/90"

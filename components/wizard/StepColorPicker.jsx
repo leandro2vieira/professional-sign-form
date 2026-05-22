@@ -32,7 +32,7 @@ export default function StepColorPicker({
   };
 
   return (
-    <div>
+    <div className="pb-28 lg:pb-0">
       <button
         onClick={onBack}
         className="flex items-center gap-1 text-muted-foreground hover:text-foreground mb-5 text-sm transition-colors min-h-[44px] -ml-1 pr-3"
@@ -94,7 +94,7 @@ export default function StepColorPicker({
         </div>
       </div>
 
-      <div className="sticky bottom-0 -mx-4 px-4 pt-4 pb-safe sm:pb-4 bg-background/95 backdrop-blur-sm border-t border-border/50 mt-6">
+      <div className="fixed bottom-0 inset-x-0 z-50 px-4 pt-4 pb-safe sm:pb-4 bg-background/95 backdrop-blur-sm border-t border-border/50 lg:sticky lg:bottom-0 lg:-mx-4 lg:left-auto lg:right-auto lg:z-auto">
         <Button
           onClick={onNext}
           disabled={!isValidHex}
