@@ -56,7 +56,7 @@ export default function StepTextInput({
       </p>
       <h2 className="text-2xl font-bold mb-1">{title}</h2>
       <p className="text-muted-foreground text-sm mb-5 sm:mb-8">
-        Este texto aparecerá na sua logo
+        Este é o texto que fica sobre a base
       </p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
