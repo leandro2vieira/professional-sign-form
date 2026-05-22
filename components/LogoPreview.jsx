@@ -29,8 +29,8 @@ export default function LogoPreview({ data }) {
           {/* Image slot */}
           {modelo_escolhido ? (
             <img
-              src={`/models/modelo-${modelo_escolhido}.jpg`}
-              alt={`Modelo ${modelo_escolhido}`}
+              src={`/models/${modelo_escolhido}`}
+              alt={modelo_escolhido}
               className="w-20 h-20 object-cover opacity-90 rounded"
               onError={(e) => { e.currentTarget.style.display = "none"; }}
             />

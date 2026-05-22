@@ -1,10 +1,14 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Check, ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const MODELS = [1, 2, 3, 4, 5, 6];
+function labelFromFilename(filename) {
+  // Strip extension, then strip leading "N-" prefix if present
+  return filename.replace(/\.[^.]+$/, "").replace(/^\d+-/, "");
+}
 
 export default function StepEconomicGallery({
   data,
@@ -13,8 +17,17 @@ export default function StepEconomicGallery({
   onBack,
   stepLabel,
 }) {
-  const handleSelect = (num) => {
-    onUpdate({ modelo_escolhido: num });
+  const [models, setModels] = useState([]);
+
+  useEffect(() => {
+    fetch("/api/images?folder=models")
+      .then((r) => r.json())
+      .then(({ files }) => setModels(files ?? []))
+      .catch(() => setModels([]));
+  }, []);
+
+  const handleSelect = (filename) => {
+    onUpdate({ modelo_escolhido: filename });
   };
 
   return (
@@ -35,14 +48,19 @@ export default function StepEconomicGallery({
       </p>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6 sm:mb-8">
-        {MODELS.map((num) => {
-          const isSelected = data.modelo_escolhido === num;
+        {models.length === 0 && (
+          <p className="col-span-2 sm:col-span-3 text-center text-muted-foreground text-sm py-8">
+            Nenhum modelo encontrado na pasta.
+          </p>
+        )}
+        {models.map((filename) => {
+          const isSelected = data.modelo_escolhido === filename;
           return (
             <motion.button
-              key={num}
+              key={filename}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => handleSelect(num)}
+              onClick={() => handleSelect(filename)}
               className={`
                 relative aspect-square rounded-lg overflow-hidden border-2 transition-all duration-200
                 ${
@@ -53,16 +71,13 @@ export default function StepEconomicGallery({
               `}
             >
               <img
-                src={`/models/modelo-${num}.jpg`}
-                alt={`Modelo ${num}`}
+                src={`/models/${filename}`}
+                alt={labelFromFilename(filename)}
                 className="w-full h-full object-cover"
                 loading="lazy"
-                onError={(e) => {
-                  e.currentTarget.src = `https://placehold.co/400x400/141414/6DC9A4?text=Modelo+${num}`;
-                }}
               />
               <div className="absolute bottom-0 inset-x-0 bg-background/85 py-1.5 text-center text-xs font-medium tracking-wide">
-                Modelo {num}
+                {labelFromFilename(filename)}
               </div>
               {isSelected && (
                 <div className="absolute inset-0 bg-primary/20 flex items-center justify-center">
