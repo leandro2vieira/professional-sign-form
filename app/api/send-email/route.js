@@ -32,7 +32,7 @@ export async function POST(request) {
     }
 
     await transporter.sendMail({
-      from: `"LE ART Solicitações" <${process.env.EMAIL_USER}>`,
+      from: `"Levieira's Solicitações" <${process.env.EMAIL_USER}>`,
       to: process.env.EMAIL_TO || "levieiras.art@gmail.com",
       subject: `Nova solicitação de logo — ${data.nome}`,
       html: buildEmailHtml(data),
@@ -86,8 +86,8 @@ function buildEmailHtml(data) {
     <head><meta charset="UTF-8"></head>
     <body style="background:#0a0a0a;color:#f0f0f0;font-family:sans-serif;padding:32px">
       <div style="max-width:560px;margin:0 auto">
-        <div style="border-bottom:2px solid #D4AF37;padding-bottom:12px;margin-bottom:24px">
-          <h2 style="margin:0;color:#D4AF37;letter-spacing:2px">LE ART</h2>
+        <div style="border-bottom:2px solid #6DC9A4;padding-bottom:12px;margin-bottom:24px">
+          <h2 style="margin:0;color:#6DC9A4;letter-spacing:2px">Levieira's</h2>
           <p style="margin:4px 0 0;color:#888;font-size:14px">Nova solicitação de logo</p>
         </div>
         <table style="width:100%;border-collapse:collapse;background:#141414;border-radius:8px;overflow:hidden">

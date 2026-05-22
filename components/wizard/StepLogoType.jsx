@@ -34,7 +34,7 @@ export default function StepLogoType({
     <div>
       <button
         onClick={onBack}
-        className="flex items-center gap-1 text-muted-foreground hover:text-foreground mb-6 text-sm transition-colors"
+        className="flex items-center gap-1 text-muted-foreground hover:text-foreground mb-6 text-sm transition-colors py-2"
       >
         <ChevronLeft size={15} /> Voltar
       </button>
@@ -43,11 +43,11 @@ export default function StepLogoType({
         Passo {stepLabel}
       </p>
       <h2 className="text-2xl font-bold mb-1">Qual tipo de logo deseja?</h2>
-      <p className="text-muted-foreground text-sm mb-8">
+      <p className="text-muted-foreground text-sm mb-5 sm:mb-8">
         Selecione uma opção para continuar
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
         {TYPES.map((type) => {
           const isSelected = data.tipo_logo === type.id;
           return (
@@ -57,7 +57,7 @@ export default function StepLogoType({
               whileTap={{ scale: 0.97 }}
               onClick={() => handleSelect(type.id)}
               className={`
-                relative p-8 rounded-xl border-2 text-left transition-all duration-200
+                relative p-5 sm:p-8 rounded-xl border-2 text-left transition-all duration-200
                 ${
                   isSelected
                     ? "border-primary bg-primary/10"
@@ -65,7 +65,7 @@ export default function StepLogoType({
                 }
               `}
             >
-              <div className="text-3xl mb-4 text-primary">{type.icon}</div>
+              <div className="text-2xl mb-3 text-primary">{type.icon}</div>
               <div className="font-bold text-base tracking-wider mb-1.5">
                 {type.label}
               </div>

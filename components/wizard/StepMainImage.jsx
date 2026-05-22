@@ -21,7 +21,7 @@ export default function StepMainImage({
     <div>
       <button
         onClick={onBack}
-        className="flex items-center gap-1 text-muted-foreground hover:text-foreground mb-6 text-sm transition-colors"
+        className="flex items-center gap-1 text-muted-foreground hover:text-foreground mb-6 text-sm transition-colors py-2"
       >
         <ChevronLeft size={15} /> Voltar
       </button>
@@ -47,15 +47,16 @@ export default function StepMainImage({
                 relative aspect-square rounded-lg overflow-hidden border-2 transition-all duration-200
                 ${
                   isSelected
-                    ? "border-primary shadow-[0_0_16px_rgba(212,175,55,0.25)]"
+                    ? "border-primary shadow-[0_0_16px_rgba(109,201,164,0.25)]"
                     : "border-border hover:border-primary/40"
                 }
               `}
             >
               <img
-                src={`https://placehold.co/400x400/0f0f0f/D4AF37?text=Imagem+${num}`}
+                src={`https://placehold.co/400x400/141414/6DC9A4?text=Imagem+${num}`}
                 alt={`Imagem ${num}`}
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
               <div className="absolute bottom-0 inset-x-0 bg-background/85 py-1.5 text-center text-xs font-medium tracking-wide">
                 Imagem {num}

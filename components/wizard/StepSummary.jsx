@@ -39,8 +39,8 @@ export default function StepSummary({ data, uploadFile, onBack, onSuccess }) {
 
       const fieldsToSend = [
         "nome", "email", "whatsapp", "tipo_logo",
-        "modelo_escolhido", "imagem_logo", "imagem_referencia",
-        "cor_principal", "texto_base", "cor_texto_base",
+        "modelo_escolhido", "imagem_referencia",
+        "cor_objeto", "cor_principal", "texto_base", "cor_texto_base",
         "texto_interno", "cor_texto_interno",
       ];
 
@@ -76,13 +76,13 @@ export default function StepSummary({ data, uploadFile, onBack, onSuccess }) {
     <div>
       <button
         onClick={onBack}
-        className="flex items-center gap-1 text-muted-foreground hover:text-foreground mb-6 text-sm transition-colors"
+        className="flex items-center gap-1 text-muted-foreground hover:text-foreground mb-6 text-sm transition-colors py-2"
       >
         <ChevronLeft size={15} /> Voltar
       </button>
 
       <h2 className="text-2xl font-bold mb-1">Resumo da solicitação</h2>
-      <p className="text-muted-foreground text-sm mb-6">
+      <p className="text-muted-foreground text-sm mb-5 sm:mb-6">
         Confira tudo antes de enviar
       </p>
 
@@ -102,18 +102,19 @@ export default function StepSummary({ data, uploadFile, onBack, onSuccess }) {
           </Row>
         )}
 
-        <Row label="Imagem principal">Imagem {data.imagem_logo}</Row>
-
-        <Row label="Cor principal">
-          <ColorSwatch color={data.cor_principal} />
+        <Row label="Cor do objeto">
+          <ColorSwatch color={data.cor_objeto} />
         </Row>
-        <Row label="Texto base">{data.texto_base}</Row>
-        <Row label="Cor texto base">
+        <Row label="Texto da base">{data.texto_base}</Row>
+        <Row label="Cor do texto da base">
           <ColorSwatch color={data.cor_texto_base} />
         </Row>
-        <Row label="Texto interno">{data.texto_interno}</Row>
-        <Row label="Cor texto interno">
+        <Row label="Texto dentro da base">{data.texto_interno}</Row>
+        <Row label="Cor do texto dentro da base">
           <ColorSwatch color={data.cor_texto_interno} />
+        </Row>
+        <Row label="Cor da base">
+          <ColorSwatch color={data.cor_principal} />
         </Row>
       </div>
 

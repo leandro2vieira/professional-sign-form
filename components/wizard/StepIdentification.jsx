@@ -48,8 +48,8 @@ export default function StepIdentification({ data, onUpdate, onNext }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.05 }}
       >
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold tracking-tight mb-2">
+        <div className="mb-5 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2">
             Solicitação de Logo
           </h1>
           <p className="text-muted-foreground">
@@ -68,6 +68,8 @@ export default function StepIdentification({ data, onUpdate, onNext }) {
               {...register("nome")}
               placeholder="Seu nome"
               className="py-5"
+              autoComplete="name"
+              autoFocus
             />
             {errors.nome && (
               <p className="text-destructive text-sm">{errors.nome.message}</p>
@@ -83,6 +85,8 @@ export default function StepIdentification({ data, onUpdate, onNext }) {
               {...register("email")}
               placeholder="seu@email.com"
               className="py-5"
+              autoComplete="email"
+              inputMode="email"
             />
             {errors.email && (
               <p className="text-destructive text-sm">{errors.email.message}</p>
@@ -102,6 +106,8 @@ export default function StepIdentification({ data, onUpdate, onNext }) {
               placeholder="(11) 99999-9999"
               className="py-5"
               maxLength={16}
+              inputMode="tel"
+              autoComplete="tel"
             />
             {errors.whatsapp && (
               <p className="text-destructive text-sm">

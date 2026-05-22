@@ -46,7 +46,7 @@ export default function StepTextInput({
     <div>
       <button
         onClick={onBack}
-        className="flex items-center gap-1 text-muted-foreground hover:text-foreground mb-6 text-sm transition-colors"
+        className="flex items-center gap-1 text-muted-foreground hover:text-foreground mb-6 text-sm transition-colors py-2"
       >
         <ChevronLeft size={15} /> Voltar
       </button>
@@ -55,7 +55,7 @@ export default function StepTextInput({
         Passo {stepLabel}
       </p>
       <h2 className="text-2xl font-bold mb-1">{title}</h2>
-      <p className="text-muted-foreground text-sm mb-8">
+      <p className="text-muted-foreground text-sm mb-5 sm:mb-8">
         Este texto aparecerá na sua logo
       </p>
 

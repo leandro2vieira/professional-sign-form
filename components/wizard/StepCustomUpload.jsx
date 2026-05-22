@@ -56,7 +56,7 @@ export default function StepCustomUpload({
     <div>
       <button
         onClick={onBack}
-        className="flex items-center gap-1 text-muted-foreground hover:text-foreground mb-6 text-sm transition-colors"
+        className="flex items-center gap-1 text-muted-foreground hover:text-foreground mb-6 text-sm transition-colors py-2"
       >
         <ChevronLeft size={15} /> Voltar
       </button>
@@ -65,13 +65,13 @@ export default function StepCustomUpload({
         Passo {stepLabel}
       </p>
       <h2 className="text-2xl font-bold mb-1">Envie uma referência</h2>
-      <p className="text-muted-foreground text-sm mb-8">
+      <p className="text-muted-foreground text-sm mb-5 sm:mb-8">
         JPG, PNG ou WebP · Máximo 4 MB
       </p>
 
       {!preview && !data.imagem_referencia ? (
         <motion.div
-          animate={{ borderColor: isDragging ? "#D4AF37" : "#333" }}
+          animate={{ borderColor: isDragging ? "#6DC9A4" : "rgba(255,255,255,0.08)" }}
           onDragOver={(e) => {
             e.preventDefault();
             setIsDragging(true);
@@ -79,10 +79,13 @@ export default function StepCustomUpload({
           onDragLeave={() => setIsDragging(false)}
           onDrop={handleDrop}
           onClick={() => inputRef.current?.click()}
-          className="border-2 border-dashed rounded-xl p-14 text-center cursor-pointer transition-colors hover:border-primary/50 bg-card"
+          className="border-2 border-dashed rounded-xl p-8 sm:p-14 text-center cursor-pointer transition-colors hover:border-primary/50 bg-card active:bg-card/70"
         >
           <Upload className="mx-auto mb-4 text-muted-foreground" size={36} />
-          <p className="font-medium mb-1">Arraste ou clique para enviar</p>
+          <p className="font-medium mb-1">
+            <span className="sm:hidden">Toque para selecionar</span>
+            <span className="hidden sm:inline">Arraste ou clique para enviar</span>
+          </p>
           <p className="text-muted-foreground text-sm">JPG, PNG, WebP · máx. 4 MB</p>
           <input
             ref={inputRef}
@@ -126,7 +129,7 @@ export default function StepCustomUpload({
       <Button
         onClick={onNext}
         disabled={!hasFile}
-        className="w-full mt-8 py-6 text-base font-semibold"
+        className="w-full mt-6 sm:mt-8 py-6 text-base font-semibold"
       >
         Continuar
       </Button>

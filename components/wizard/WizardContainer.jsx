@@ -3,13 +3,13 @@
 import { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
+import { ChevronDown, Eye } from "lucide-react";
 import { saveWizardData, loadWizardData, clearWizardData } from "@/lib/storage";
 import { Progress } from "@/components/ui/progress";
 import StepIdentification from "./StepIdentification";
 import StepLogoType from "./StepLogoType";
 import StepEconomicGallery from "./StepEconomicGallery";
 import StepCustomUpload from "./StepCustomUpload";
-import StepMainImage from "./StepMainImage";
 import StepColorPicker from "./StepColorPicker";
 import StepTextInput from "./StepTextInput";
 import StepSummary from "./StepSummary";
@@ -23,7 +23,8 @@ const INITIAL_DATA = {
   tipo_logo: null,
   modelo_escolhido: null,
   imagem_logo: null,
-  cor_principal: "#D4AF37",
+  cor_objeto: "#6DC9A4",
+  cor_principal: "#6DC9A4",
   texto_base: "",
   cor_texto_base: "#F8F8F8",
   texto_interno: "",
@@ -52,6 +53,7 @@ export default function WizardContainer() {
   const [data, setData] = useState({ ...INITIAL_DATA, nome: clienteParam });
   const [uploadFile, setUploadFile] = useState(null);
   const [ready, setReady] = useState(false);
+  const [mobilePreviewOpen, setMobilePreviewOpen] = useState(false);
 
   // Restore session from localStorage
   useEffect(() => {
@@ -82,6 +84,7 @@ export default function WizardContainer() {
 
   const goNext = useCallback(() => {
     setDirection(1);
+    window.scrollTo({ top: 0, behavior: "smooth" });
     if (phase === "identification") {
       setPhase("wizard");
       setWizardStep(0);
@@ -96,6 +99,7 @@ export default function WizardContainer() {
 
   const goBack = useCallback(() => {
     setDirection(-1);
+    window.scrollTo({ top: 0, behavior: "smooth" });
     if (phase === "wizard" && wizardStep === 0) {
       setPhase("identification");
     } else if (phase === "wizard") {
@@ -135,11 +139,9 @@ export default function WizardContainer() {
   return (
     <div className="min-h-screen bg-background">
       {/* ── Header ── */}
-      <header className="border-b border-border/50 px-4 py-4">
+      <header className="border-b border-border/50 px-4 py-3">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <span className="text-gold font-bold text-xl tracking-[0.3em]">
-            LE ART
-          </span>
+          <img src="/logo.png" alt="Levieira's" className="h-8 sm:h-10 w-auto" />
           {showProgress && (
             <span className="text-muted-foreground text-sm tabular-nums">
               {phase === "summary"
@@ -156,7 +158,7 @@ export default function WizardContainer() {
           <div className="max-w-6xl mx-auto">
             <Progress
               value={progressValue}
-              className="h-[2px] rounded-none bg-muted"
+              className="h-[3px] rounded-none bg-muted"
             />
           </div>
         </div>
@@ -175,10 +177,34 @@ export default function WizardContainer() {
           <div
             className={
               showPreview
-                ? "flex-1 min-w-0 py-8"
-                : "w-full max-w-md py-12"
+                ? "flex-1 min-w-0 py-6 sm:py-8 overflow-hidden"
+                : "w-full max-w-md py-8 sm:py-12 overflow-hidden"
             }
           >
+            {/* Mobile preview toggle */}
+            {showPreview && (
+              <div className="lg:hidden mb-5">
+                <button
+                  onClick={() => setMobilePreviewOpen((p) => !p)}
+                  className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-card border border-border/60 text-sm text-muted-foreground transition-colors active:opacity-70"
+                >
+                  <span className="flex items-center gap-2">
+                    <Eye size={14} />
+                    Preview da logo
+                  </span>
+                  <ChevronDown
+                    size={14}
+                    className={`transition-transform duration-200 ${mobilePreviewOpen ? "rotate-180" : ""}`}
+                  />
+                </button>
+                {mobilePreviewOpen && (
+                  <div className="mt-3">
+                    <LogoPreview data={data} />
+                  </div>
+                )}
+              </div>
+            )}
+
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
                 key={stepKey}
@@ -234,61 +260,63 @@ export default function WizardContainer() {
                   )}
 
                 {phase === "wizard" && wizardStep === 2 && (
-                  <StepMainImage
+                  <StepColorPicker
                     data={data}
                     onUpdate={updateData}
                     onNext={goNext}
                     onBack={goBack}
+                    title="Cor do objeto"
+                    field="cor_objeto"
                     stepLabel={`${wizardStep}/${TOTAL_VISIBLE_STEPS}`}
                   />
                 )}
 
                 {phase === "wizard" && wizardStep === 3 && (
-                  <StepColorPicker
+                  <StepTextInput
                     data={data}
                     onUpdate={updateData}
                     onNext={goNext}
                     onBack={goBack}
-                    title="Cor principal"
-                    field="cor_principal"
+                    title="Texto da base"
+                    field="texto_base"
+                    placeholder="Ex: Levieira's"
                     stepLabel={`${wizardStep}/${TOTAL_VISIBLE_STEPS}`}
                   />
                 )}
 
                 {phase === "wizard" && wizardStep === 4 && (
-                  <StepTextInput
-                    data={data}
-                    onUpdate={updateData}
-                    onNext={goNext}
-                    onBack={goBack}
-                    title="Texto base"
-                    field="texto_base"
-                    placeholder="Ex: LE ART"
-                    stepLabel={`${wizardStep}/${TOTAL_VISIBLE_STEPS}`}
-                  />
-                )}
-
-                {phase === "wizard" && wizardStep === 5 && (
                   <StepColorPicker
                     data={data}
                     onUpdate={updateData}
                     onNext={goNext}
                     onBack={goBack}
-                    title="Cor do texto base"
+                    title="Cor do texto da base"
                     field="cor_texto_base"
                     stepLabel={`${wizardStep}/${TOTAL_VISIBLE_STEPS}`}
                   />
                 )}
 
-                {phase === "wizard" && wizardStep === 6 && (
+                {phase === "wizard" && wizardStep === 5 && (
                   <StepTextInput
                     data={data}
                     onUpdate={updateData}
                     onNext={goNext}
                     onBack={goBack}
-                    title="Texto interno"
+                    title="Texto dentro da base"
                     field="texto_interno"
                     placeholder="Ex: Personalizados"
+                    stepLabel={`${wizardStep}/${TOTAL_VISIBLE_STEPS}`}
+                  />
+                )}
+
+                {phase === "wizard" && wizardStep === 6 && (
+                  <StepColorPicker
+                    data={data}
+                    onUpdate={updateData}
+                    onNext={goNext}
+                    onBack={goBack}
+                    title="Cor do texto dentro da base"
+                    field="cor_texto_interno"
                     stepLabel={`${wizardStep}/${TOTAL_VISIBLE_STEPS}`}
                   />
                 )}
@@ -299,8 +327,8 @@ export default function WizardContainer() {
                     onUpdate={updateData}
                     onNext={goNext}
                     onBack={goBack}
-                    title="Cor do texto interno"
-                    field="cor_texto_interno"
+                    title="Cor da base"
+                    field="cor_principal"
                     stepLabel={`${wizardStep}/${TOTAL_VISIBLE_STEPS}`}
                   />
                 )}
@@ -315,7 +343,7 @@ export default function WizardContainer() {
                 )}
 
                 {phase === "success" && (
-                  <StepSuccess onReset={handleSuccess} />
+                  <StepSuccess onReset={handleSuccess} data={data} />
                 )}
               </motion.div>
             </AnimatePresence>
@@ -331,12 +359,6 @@ export default function WizardContainer() {
           )}
         </div>
 
-        {/* ── Preview (mobile) ── */}
-        {showPreview && (
-          <div className="lg:hidden pb-10">
-            <LogoPreview data={data} />
-          </div>
-        )}
       </div>
     </div>
   );

@@ -13,8 +13,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Solicitação de Logo — LE ART",
+  title: "Solicitação de Logo — Levieira's",
   description: "Solicite sua logo personalizada",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }) {
@@ -25,7 +31,7 @@ export default function RootLayout({ children }) {
     >
       <body className="min-h-full flex flex-col">
         {children}
-        <Toaster richColors position="top-right" />
+        <Toaster richColors position="top-center" />
       </body>
     </html>
   );

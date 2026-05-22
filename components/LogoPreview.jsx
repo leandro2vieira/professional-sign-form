@@ -2,7 +2,7 @@
 
 export default function LogoPreview({ data }) {
   const {
-    imagem_logo,
+    modelo_escolhido,
     cor_principal,
     texto_base,
     cor_texto_base,
@@ -27,11 +27,12 @@ export default function LogoPreview({ data }) {
           }}
         >
           {/* Image slot */}
-          {imagem_logo ? (
+          {modelo_escolhido ? (
             <img
-              src={`https://placehold.co/96x96/ffffff/000000?text=${imagem_logo}`}
-              alt="Imagem logo"
-              className="w-20 h-20 object-contain opacity-90 rounded"
+              src={`/models/modelo-${modelo_escolhido}.jpg`}
+              alt={`Modelo ${modelo_escolhido}`}
+              className="w-20 h-20 object-cover opacity-90 rounded"
+              onError={(e) => { e.currentTarget.style.display = "none"; }}
             />
           ) : (
             <div className="w-20 h-20 rounded-full border-2 border-dashed border-white/20 flex items-center justify-center">

@@ -17,7 +17,7 @@ export default function StepColorPicker({
   field,
   stepLabel,
 }) {
-  const value = data[field] || "#D4AF37";
+  const value = data[field] || "#6DC9A4";
   const isValidHex = /^#[0-9A-Fa-f]{6}$/.test(value);
 
   const handlePickerChange = (color) => {
@@ -35,7 +35,7 @@ export default function StepColorPicker({
     <div>
       <button
         onClick={onBack}
-        className="flex items-center gap-1 text-muted-foreground hover:text-foreground mb-6 text-sm transition-colors"
+        className="flex items-center gap-1 text-muted-foreground hover:text-foreground mb-6 text-sm transition-colors py-2"
       >
         <ChevronLeft size={15} /> Voltar
       </button>
@@ -44,21 +44,39 @@ export default function StepColorPicker({
         Passo {stepLabel}
       </p>
       <h2 className="text-2xl font-bold mb-1">{title}</h2>
-      <p className="text-muted-foreground text-sm mb-8">
+      <p className="text-muted-foreground text-sm mb-5 sm:mb-8">
         Escolha no seletor ou insira o código HEX
       </p>
 
-      <div className="flex flex-col items-center gap-6">
+      <div className="flex flex-col items-center gap-4 sm:gap-6">
         <HexColorPicker
-          color={isValidHex ? value : "#D4AF37"}
+          color={isValidHex ? value : "#6DC9A4"}
           onChange={handlePickerChange}
-          style={{ width: "100%", maxWidth: 320, height: 220 }}
+          style={{ width: "100%", maxWidth: "min(320px, 100%)", height: 200 }}
         />
+
+        <div className="w-full max-w-xs">
+          <p className="text-xs text-muted-foreground mb-2">Cores rápidas</p>
+          <div className="flex flex-wrap gap-2 mb-1">
+            {["#FFFFFF", "#1A1A1A", "#6DC9A4", "#D4AF37", "#F5F0E0", "#1E3A5F", "#8B4513", "#C0392B"].map((preset) => (
+              <button
+                key={preset}
+                onClick={() => handlePickerChange(preset)}
+                className="w-9 h-9 rounded-lg border-2 transition-all active:scale-90"
+                style={{
+                  background: preset,
+                  borderColor: value === preset ? "#6DC9A4" : "rgba(255,255,255,0.15)",
+                  boxShadow: value === preset ? "0 0 0 2px rgba(109,201,164,0.35)" : "none",
+                }}
+              />
+            ))}
+          </div>
+        </div>
 
         <div className="flex items-center gap-3 w-full max-w-xs">
           <div
             className="w-11 h-11 rounded-lg border border-border shrink-0 shadow-sm"
-            style={{ background: isValidHex ? value : "#D4AF37" }}
+            style={{ background: isValidHex ? value : "#6DC9A4" }}
           />
           <div className="flex-1 space-y-1">
             <Label htmlFor={`color-${field}`} className="text-xs">
@@ -79,7 +97,7 @@ export default function StepColorPicker({
       <Button
         onClick={onNext}
         disabled={!isValidHex}
-        className="w-full mt-8 py-6 text-base font-semibold"
+        className="w-full mt-6 sm:mt-8 py-6 text-base font-semibold"
       >
         Continuar
       </Button>

@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import WizardContainer from "@/components/wizard/WizardContainer";
 
 export const metadata = {
-  title: "Solicitação de Logo — LE ART",
+  title: "Solicitação de Logo — Levieira's",
   description: "Preencha o formulário para solicitar sua logo personalizada",
 };
 
