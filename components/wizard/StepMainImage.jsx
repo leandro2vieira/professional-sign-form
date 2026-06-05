@@ -1,8 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Check, ChevronLeft } from "lucide-react";
+import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import BackButton from "./BackButton";
 
 const IMAGES = [1, 2, 3, 4, 5, 6];
 
@@ -11,6 +12,7 @@ export default function StepMainImage({
   onUpdate,
   onNext,
   onBack,
+  onReset,
   stepLabel,
 }) {
   const handleSelect = (num) => {
@@ -19,12 +21,7 @@ export default function StepMainImage({
 
   return (
     <div>
-      <button
-        onClick={onBack}
-        className="flex items-center gap-1 text-muted-foreground hover:text-foreground mb-5 text-sm transition-colors min-h-[44px] -ml-1 pr-3"
-      >
-        <ChevronLeft size={15} /> Voltar
-      </button>
+      <BackButton onClick={onBack} onReset={onReset} />
 
       <p className="text-primary text-xs font-semibold tracking-widest mb-2 uppercase">
         Passo {stepLabel}

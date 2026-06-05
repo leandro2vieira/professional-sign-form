@@ -2,9 +2,10 @@
 
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Upload, X, ImageIcon, ChevronLeft } from "lucide-react";
+import { Upload, X, ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import BackButton from "./BackButton";
 
 const MAX_SIZE = 4 * 1024 * 1024; // 4 MB (Vercel free tier limit)
 const ACCEPT_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -14,6 +15,7 @@ export default function StepCustomUpload({
   onUpdate,
   onNext,
   onBack,
+  onReset,
   uploadFile,
   setUploadFile,
   stepLabel,
@@ -54,12 +56,7 @@ export default function StepCustomUpload({
 
   return (
     <div className="pb-28 lg:pb-0">
-      <button
-        onClick={onBack}
-        className="flex items-center gap-1 text-muted-foreground hover:text-foreground mb-5 text-sm transition-colors min-h-[44px] -ml-1 pr-3"
-      >
-        <ChevronLeft size={15} /> Voltar
-      </button>
+      <BackButton onClick={onBack} onReset={onReset} />
 
       <p className="text-primary text-xs font-semibold tracking-widest mb-2 uppercase">
         Passo {stepLabel}

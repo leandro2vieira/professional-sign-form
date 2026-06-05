@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
+import BackButton from "./BackButton";
 
 const TYPES = [
   {
@@ -23,6 +24,7 @@ export default function StepLogoType({
   onUpdate,
   onNext,
   onBack,
+  onReset,
   stepLabel,
 }) {
   const handleSelect = (tipo) => {
@@ -32,12 +34,7 @@ export default function StepLogoType({
 
   return (
     <div>
-      <button
-        onClick={onBack}
-        className="flex items-center gap-1 text-muted-foreground hover:text-foreground mb-5 text-sm transition-colors min-h-[44px] -ml-1 pr-3"
-      >
-        <ChevronLeft size={15} /> Voltar
-      </button>
+      <BackButton onClick={onBack} onReset={onReset} />
 
       <p className="text-primary text-xs font-semibold tracking-widest mb-2 uppercase">
         Passo {stepLabel}

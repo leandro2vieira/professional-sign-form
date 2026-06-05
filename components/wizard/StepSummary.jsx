@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronLeft, Send, Loader2 } from "lucide-react";
+import { Send, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
+import BackButton from "./BackButton";
 
 const TIPO_LABEL = { economica: "Econômica", customizada: "Customizada" };
 
@@ -29,7 +30,7 @@ function Row({ label, children }) {
   );
 }
 
-export default function StepSummary({ data, uploadFile, onBack, onSuccess }) {
+export default function StepSummary({ data, uploadFile, onBack, onReset, onSuccess }) {
   const [loading, setLoading] = useState(false);
 
   const handleSend = async () => {
@@ -74,12 +75,7 @@ export default function StepSummary({ data, uploadFile, onBack, onSuccess }) {
 
   return (
     <div className="pb-28 lg:pb-0">
-      <button
-        onClick={onBack}
-        className="flex items-center gap-1 text-muted-foreground hover:text-foreground mb-5 text-sm transition-colors min-h-[44px] -ml-1 pr-3"
-      >
-        <ChevronLeft size={15} /> Voltar
-      </button>
+      <BackButton onClick={onBack} onReset={onReset} />
 
       <h2 className="text-2xl font-bold mb-1">Resumo da solicitação</h2>
       <p className="text-muted-foreground text-sm mb-5 sm:mb-6">

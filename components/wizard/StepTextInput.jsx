@@ -3,10 +3,11 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { ChevronLeft, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import BackButton from "./BackButton";
 
 const TIPO_OPTIONS = [
   {
@@ -28,6 +29,7 @@ export default function StepTextInput({
   onUpdate,
   onNext,
   onBack,
+  onReset,
   title,
   field,
   placeholder,
@@ -66,12 +68,7 @@ export default function StepTextInput({
 
   return (
     <div className="pb-28 lg:pb-0">
-      <button
-        onClick={onBack}
-        className="flex items-center gap-1 text-muted-foreground hover:text-foreground mb-5 text-sm transition-colors min-h-[44px] -ml-1 pr-3"
-      >
-        <ChevronLeft size={15} /> Voltar
-      </button>
+      <BackButton onClick={onBack} onReset={onReset} />
 
       <p className="text-primary text-xs font-semibold tracking-widest mb-2 uppercase">
         Passo {stepLabel}

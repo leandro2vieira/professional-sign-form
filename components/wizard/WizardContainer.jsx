@@ -124,6 +124,14 @@ export default function WizardContainer() {
     setWizardStep(0);
   }, [clienteParam]);
 
+  const handleReset = useCallback(() => {
+    clearWizardData();
+    setData({ ...INITIAL_DATA, nome: clienteParam });
+    setUploadFile(null);
+    setPhase("identification");
+    setWizardStep(0);
+  }, [clienteParam]);
+
   // Reference image per step (mobile guide)
   const STEP_REFERENCE_IMAGES = {
     "wizard-0": "/Logo-Reference.png",
@@ -249,6 +257,7 @@ export default function WizardContainer() {
                     onUpdate={updateData}
                     onNext={goNext}
                     onBack={goBack}
+                    onReset={handleReset}
                     stepLabel={`${visibleStep}/${TOTAL_VISIBLE_STEPS}`}
                   />
                 )}
@@ -261,6 +270,7 @@ export default function WizardContainer() {
                       onUpdate={updateData}
                       onNext={goNext}
                       onBack={goBack}
+                      onReset={handleReset}
                       stepLabel={`${visibleStep}/${TOTAL_VISIBLE_STEPS}`}
                     />
                   )}
@@ -273,6 +283,7 @@ export default function WizardContainer() {
                       onUpdate={updateData}
                       onNext={goNext}
                       onBack={goBack}
+                      onReset={handleReset}
                       uploadFile={uploadFile}
                       setUploadFile={setUploadFile}
                       stepLabel={`${visibleStep}/${TOTAL_VISIBLE_STEPS}`}
@@ -285,6 +296,7 @@ export default function WizardContainer() {
                     onUpdate={updateData}
                     onNext={goNext}
                     onBack={goBack}
+                    onReset={handleReset}
                     title={<>Escolha a <span className="text-primary">COR</span> do logo</>}
                     field="cor_objeto"
                     stepLabel={`${wizardStep}/${TOTAL_VISIBLE_STEPS}`}
@@ -298,6 +310,7 @@ export default function WizardContainer() {
                     onUpdate={updateData}
                     onNext={goNext}
                     onBack={goBack}
+                    onReset={handleReset}
                     title={<><span className="text-primary">TEXTO</span> sobre a base</>}
                     field="texto_base"
                     placeholder="Ex: Levieira's"
@@ -312,6 +325,7 @@ export default function WizardContainer() {
                     onUpdate={updateData}
                     onNext={goNext}
                     onBack={goBack}
+                    onReset={handleReset}
                     title={<><span className="text-primary">COR</span> do texto sobre a base</>}
                     field="cor_texto_base"
                     stepLabel={`${wizardStep}/${TOTAL_VISIBLE_STEPS}`}
@@ -324,6 +338,7 @@ export default function WizardContainer() {
                     onUpdate={updateData}
                     onNext={goNext}
                     onBack={goBack}
+                    onReset={handleReset}
                     title={<><span className="text-primary">TEXTO</span> dentro da base</>}
                     field="texto_interno"
                     placeholder="Ex: Personalizados"
@@ -339,6 +354,7 @@ export default function WizardContainer() {
                     onUpdate={updateData}
                     onNext={goNext}
                     onBack={goBack}
+                    onReset={handleReset}
                     title={<><span className="text-primary">COR</span> do texto dentro da base</>}
                     field="cor_texto_interno"
                     stepLabel={`${wizardStep}/${TOTAL_VISIBLE_STEPS}`}
@@ -351,6 +367,7 @@ export default function WizardContainer() {
                     onUpdate={updateData}
                     onNext={goNext}
                     onBack={goBack}
+                    onReset={handleReset}
                     title={<><span className="text-primary">COR</span> da base</>}
                     field="cor_principal"
                     stepLabel={`${wizardStep}/${TOTAL_VISIBLE_STEPS}`}
@@ -362,6 +379,7 @@ export default function WizardContainer() {
                     data={data}
                     uploadFile={uploadFile}
                     onBack={goBack}
+                    onReset={handleReset}
                     onSuccess={() => setPhase("success")}
                   />
                 )}
